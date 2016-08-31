@@ -15,19 +15,18 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
 
-  <script src="https://powercommunication.rethink.orange-labs.fr/.well-known/runtime/rethink.js"></script>
+  <script src="https://hybroker.rethink.ptinovacao.pt/.well-known/runtime/rethink.js"></script>
   <script src="./helloWorldHypertyClient.js"></script>
 
  </head>
 <body>
+  <script type="text/javascript">
+    loadRuntime();
+  </script>
   <!--<div class="progress"><div class="indeterminate"></div></div>-->
 	<div>
 	This Example will show you (please click on the link):
 	<ul class="collection">
-		<a onclick="loadRuntime();" class="collection-item">How to load a runtime (proviously deployed on a catalogue server)</a>
-        <a onclick="loadHypertyObs();" class="collection-item">How to load an Observer hyperty (Authentication mandatory)</li>
-            <a onclick="loadHypertyRep();" class="collection-item">How to load a Reporter hyperty (Authentication mandatory)</li>
-		<a onclick="sayHelloToHyperty();"  class="collection-item">How to contact another Hyperty to send HelloWorld Service.</li>
 	</ul>
 	</div>
       <div class="runtime-panel">
@@ -52,7 +51,7 @@
 <div>
 <br>
 <p></p>
-Last update 28/06/2016</div>
+Last update 30/08/2016</div>
 <!--  <script src="../vendor/system.js"></script>
   <script src="../config.js"></script>  -->
 <!--  <script src="./helloReporter.js"></script> -->
