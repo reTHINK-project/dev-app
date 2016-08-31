@@ -3,7 +3,9 @@ This example is a standalone application that aims to illustrate the basics of H
 
 
 ## Prerequisite
-This application is based on the Hello World hyperty, that have to be already deployed in a catalogue. For example if your service provider is rethink.com following files have to be accessible:  
+
+This application is based on the Hello World hyperty, that have to be already deployed in a catalogue. 
+For example if your service provider is rethink.com following files have to be accessible:  
 https://catalogue.rethink.com/.well-known/runtime/defaultRuntime (to upload the runtime in the browser)  
 https://catalogue.rethink.com/.well-known/protocolstub/MsgNodeProtoStub (to be able to access the messaging node)   
 
@@ -14,6 +16,8 @@ for the Hyperties.
 For the Web application HelloWorld you just need a web server (no node server or transpiler needed).  
 
 This example is written in ECMA5 and does not need any transformation to run on a browser.
+
+To change this example for your service provider, you only need to edit domain variable on file helloWorldHypertyClient.js (line 6).
 
 ## Functions
 This Example will show you:  
