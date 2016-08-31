@@ -3,11 +3,20 @@
  *
  *
  */
+let domain = 'hybroker.rethink.ptinovacao.pt';
 
+let head = document.getElementsByTagName('head')[0];
+let script = document.createElement('script');
+script.type = 'text/javascript';
+script.onload = function() {
+  loadRuntime();
+}
+script.src = 'https://'+domain+'/.well-known/runtime/rethink.js';
+head.appendChild(script);
 
 let RUNTIME;
 
-let domain = 'hybroker.rethink.ptinovacao.pt';
+
 let hypertyObserver = null;
 let hypertyReporter = null;
 let runtimeURL = `hyperty-catalogue://catalogue.${domain}/.well-known/runtime/Runtime`;
