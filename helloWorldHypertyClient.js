@@ -3,38 +3,55 @@
  *
  *
  */
-let domain = 'hybroker.rethink.ptinovacao.pt';
 
-let head = document.getElementsByTagName('head')[0];
-let script = document.createElement('script');
-script.type = 'text/javascript';
-script.onload = function() {
-  loadRuntime();
+ let runtime_domain;
+ let hyperty_domain;
+ let runtimeURL;
+
+ $(document).ready(function(){
+     console.log( "ready!" );
+     $.getJSON('./system.config.json').complete(function(data) {
+       console.log('datasdf->', data);
+       ready(JSON.parse(data.responseText));
+     });
+ });
+
+function ready(config){
+  runtime_domain = config["runtime-domain"];
+  hyperty_domain = config["hyperty-domain"]
+
+  let head = document.getElementsByTagName('head')[0];
+  let script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.onload = function() {
+    loadRuntime();
+  }
+  script.src = 'https://'+runtime_domain+'/.well-known/runtime/rethink.js';
+  head.appendChild(script);
+  runtimeURL = `hyperty-catalogue://catalogue.${runtime_domain}/.well-known/runtime/Runtime`;
+
 }
-script.src = 'https://'+domain+'/.well-known/runtime/rethink.js';
-head.appendChild(script);
 
+/**
+  *
+  *Some variables for flux control
+  */
 let RUNTIME;
-
-
 let hypertyObserver = null;
 let hypertyReporter = null;
-let runtimeURL = `hyperty-catalogue://catalogue.${domain}/.well-known/runtime/Runtime`;
-const hypertyURI = (domain, hyperty) => `hyperty-catalogue://catalogue.${domain}/.well-known/hyperty/${hyperty}`;
+const hypertyURI = (hyperty_domain, hyperty) => `hyperty-catalogue://catalogue.${hyperty_domain}/.well-known/hyperty/${hyperty}`;
 let toHyperty = null;
-/**
- * Loads Hyperty Runtime
- */
 let status = 0;
 let sent = false;
 let reporterLoaded = false;
 let firstContactRemote = true;
+
 function loadRuntime()
 {
   var start = new Date().getTime();
   //Rethink runtime is included in index.html
   rethink.default.install({
-    domain: domain,
+    domain: runtime_domain,
     development: false,
     runtimeURL: runtimeURL
     }).then((runtime) => {
@@ -49,7 +66,7 @@ function loadRuntime()
 
 function loadHypertyObs()
 {
-  RUNTIME.requireHyperty(hypertyURI(domain, 'HelloWorldObserver')).then((hyperty) => {
+  RUNTIME.requireHyperty(hypertyURI(hyperty_domain, 'HelloWorldObserver')).then((hyperty) => {
     console.log('hyperty', hyperty);
     hypertyObserver = hyperty;
     $('.runtime-panel').append('<p><b>'
@@ -62,7 +79,7 @@ function loadHypertyObs()
 }
 
 function loadHypertyRep(){
-  RUNTIME.requireHyperty(hypertyURI(domain, 'HelloWorldReporter')).then((hyperty) => {
+  RUNTIME.requireHyperty(hypertyURI(hyperty_domain, 'HelloWorldReporter')).then((hyperty) => {
     hypertyReporter = hyperty;
     console.log(hyperty);
     $('.runtime-panel').append('<p><b>'
