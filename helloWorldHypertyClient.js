@@ -107,7 +107,7 @@ function sayHelloToLocalHyperty()
   $('.runtime-panel').append('<p>Observer Url to send Hello: '+ toHyperty+'</p>');
     if (!sent) {
       let collection = $('.collection');
-      collection.append('<a  onclick="sayByeToHyperty();"  class="collection-item">How to say bye to Observer Hyperty</li>') ;
+      collection.append('<a  onclick="fillSayBye();"  class="collection-item">How to say bye to Observer Hyperty</li>') ;
       sent = true;
     }
   }).catch(function(reason) {
@@ -161,16 +161,37 @@ function sayHelloToRemoteHyperty(event) {
     let hello = $('.hello-panel');
     hello.addClass('hide');
     if (!sent) {
-      collection.append('<a  onclick="sayByeToHyperty();"  class="collection-item">How to say Bye to a Hyperty.</li>') ;
+      collection.append('<a  onclick="fillSayBye();"  class="collection-item">How to say Bye to a Hyperty.</li>') ;
       sent = true;
     }
   }).catch(function(reason) {
     console.error(reason);
   });
 }
-function sayByeToHyperty() {
 
-  hypertyReporter.instance.bye();
+function fillSayBye(){
+  let bye = $('.bye-panel');
+
+  let sayBye = '<form class="say-bye"> Message to Send: <input class="to-msg-input" type="text" name="toBye"><br><input type="submit" value="Say Bye"></form>'
+
+  bye.append(sayBye);
+
+  $('.say-bye').on('submit', sayByeToHyperty);
+
+}
+
+function sayByeToHyperty(event) {
+
+  event.preventDefault();
+
+  console.log('event->',event);
+
+  let msgToSend = $(event.currentTarget).find('.to-msg-input').val();
+
+  console.log('dsadasd', msgToSend);
+  let bye = $('.bye-panel');
+  bye.addClass('hide');
+  hypertyReporter.instance.bye(msgToSend);
   $('.runtime-panel').append('<p><b>'
   +' Event: Bye sent to Hypperty <br>'+
   '<hr style="border:1px solid;"/></b></p>');
