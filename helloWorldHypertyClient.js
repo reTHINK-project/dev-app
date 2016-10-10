@@ -170,14 +170,18 @@ function sayHelloToRemoteHyperty(event) {
 }
 
 function fillSayBye(){
+
   let bye = $('.bye-panel');
 
-  let sayBye = '<form class="say-bye"> Message to Send: <input class="to-msg-input" type="text" name="toBye"><br><input type="submit" value="Say Bye"></form>'
+  let say_bye = $('.say-bye');
 
-  bye.append(sayBye);
-
-  $('.say-bye').on('submit', sayByeToHyperty);
-
+  if (say_bye.length > 0) {
+      bye.removeClass('hide');
+  } else {
+    let sayBye = '<form class="say-bye"> Message to Send: <input class="to-msg-input" type="text" name="toBye"><br><input type="submit" value="Say Bye"></form>'
+    bye.append(sayBye);
+    $('.say-bye').on('submit', sayByeToHyperty);
+  }
 }
 
 function sayByeToHyperty(event) {
