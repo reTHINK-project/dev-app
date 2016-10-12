@@ -31,6 +31,8 @@ system.config.json : configuration file that has to be modified to make the serv
 
 ## Connector Hyperty
 
+Hyperty to Handle WebRTC sessions.
+
 Catalogue URL:
 https://catalogue.hybroker.rethink.ptinovacao.pt/.well-known/hyperty/Connector
 
@@ -39,16 +41,60 @@ https://github.com/reTHINK-project/dev-hyperty/blob/master/docs/connector/readme
 
 ## Group Chat Manager Hyperty
 
+Hyperty to handle Group Chats.
+
 Catalogue URL:
 https://catalogue.hybroker.rethink.ptinovacao.pt/.well-known/hyperty/GroupChatManager
 
 Documentation:
 https://github.com/reTHINK-project/dev-hyperty/blob/master/docs/group-chat-manager/readme.md
 
+## Group Chat Hyperty
+
+Another Hyperty to handle Group Chats.
+
+Catalogue URL:
+https://catalogue.hybroker.rethink.ptinovacao.pt/.well-known/hyperty/GroupChat
+
+Documentation:
+https://github.com/reTHINK-project/dev-hyperty/blob/master/docs/group-chat/readme.md
+
 ## Bracelet Hyperty
+
+IoT (Internet of Things) related Hyperty that receives data from a BraceletSensorReporter running in a Smartphone connected to the Bracelet.
 
 Catalogue URL:
 https://catalogue.hybroker.rethink.ptinovacao.pt/.well-known/hyperty/BraceletSensorObserver
 
 Documentation:
 https://github.com/reTHINK-project/dev-hyperty/blob/master/docs/bracelet/readme.md
+
+## Location Hyperty
+
+Provides the Location of a user.
+
+Catalogue URL:
+https://catalogue.hybroker.rethink.ptinovacao.pt/.well-known/hyperty/Location
+
+Documentation:
+https://github.com/reTHINK-project/dev-hyperty/blob/master/docs/location/readme.md
+
+## User Status (Presence) Hyperty
+
+Provides the Prseence Status of a user.
+
+Catalogue URL:
+https://catalogue.hybroker.rethink.ptinovacao.pt/.well-known/hyperty/UserStatus
+
+Documentation:
+https://github.com/reTHINK-project/dev-hyperty/blob/master/docs/user-status/readme.md
+
+## DT WebRTC Hyperty
+
+Another Hyperty to Handle WebRTC sessions.
+
+Catalogue URL:
+https://catalogue.hybroker.rethink.ptinovacao.pt/.well-known/hyperty/dtwebrtc
+
+Documentation:
+*to be provided*
