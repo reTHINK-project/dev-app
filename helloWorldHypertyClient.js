@@ -170,7 +170,7 @@ function fillSayBye(){
   let say_bye = $('.say-bye');
 
 //  if (say_bye.length > 0) {
-      bye.removeClass('hide');
+    //  $('btn-bye').hide();
   //} else {
     let sayBye = '<form class="say-bye"> Message to Send: <input class="to-msg-input" type="text" name="toBye"><br><input type="submit" value="Send"></form>'
     bye.append(sayBye);
