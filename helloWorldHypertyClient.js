@@ -1,39 +1,9 @@
 /*
- * This file loads the Hyperty deployed on the catalogue
- *
+ * This is the Hello World App demo that uses the Hello World Reporter and Observer Hyperties
  *
  */
 
- let runtime_domain;
- let hyperty_domain;
- let runtimeURL;
-
- $(document).ready(function(){
-     console.log( "ready!" );
-     $.getJSON('./system.config.json').complete(function(data) {
-       console.log('datasdf->', data);
-       ready(JSON.parse(data.responseText));
-     });
- });
-
-function ready(config){
-  runtime_domain = config["runtime-domain"];
-  hyperty_domain = config["hyperty-domain"]
-
-  let head = document.getElementsByTagName('head')[0];
-  let script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.onload = function() {
-    loadRuntime();
-  }
-  script.src = 'https://'+runtime_domain+'/.well-known/runtime/rethink.js';
-  head.appendChild(script);
-  runtimeURL = `hyperty-catalogue://catalogue.${runtime_domain}/.well-known/runtime/Runtime`;
-
-}
-
 /**
-  *
   *Some variables for flux control
   */
 let RUNTIME;
@@ -45,24 +15,49 @@ let status = 0;
 let sent = false;
 let reporterLoaded = false;
 let firstContactRemote = true;
+let runtime_domain = 'hybroker.rethink.ptinovacao.pt';
+let hyperty_domain = 'hybroker.rethink.ptinovacao.pt';
+
+let config = {
+  domain: hyperty_domain,
+  development: false,
+  runtimeURL: `hyperty-catalogue://catalogue.${runtime_domain}/.well-known/runtime/Runtime`
+};
+
+console.log('runtime config: ', config);
+
+$(document).ready(function(){
+    console.log( "ready!" );
+    loadRuntime();
+  });
+
+/**
+* Function to load the Runtime
+*/
 
 function loadRuntime()
 {
   var start = new Date().getTime();
   //Rethink runtime is included in index.html
-  rethink.default.install({
-    domain: runtime_domain,
-    development: false,
-    runtimeURL: runtimeURL
-    }).then((runtime) => {
+  rethink.default.install(config).then((runtime) => {
       RUNTIME = runtime
       var time = (new Date().getTime()) - start;
       $('.runtime-panel').append('<p>Runtime has been successfully launched in ' + time/1000 +' seconds</p>');
       let collection = $('.collection');
-      collection.append('<a onclick="loadHypertyObs();" class="collection-item">How to load an Observer hyperty (Authentication mandatory)</li>') ;
-      collection.append('<a onclick="loadHypertyRep();" class="collection-item">How to load a Reporter hyperty (Authentication mandatory)</li>') ;
+      let loadHyperties = '<a onclick="loadHypertyObs();" class="waves-effect waves-light btn center-align">Load Hello World Observer Hyperty</a>'+
+      '<a onclick="loadHypertyRep();" class="waves-effect waves-light btn center-align">Load Hello World Reporter Hyperty</a>';
+
+      collection.append(loadHyperties);
+/*
+      collection.append('<p><a onclick="loadHypertyObs();" class="waves-effect waves-light btn">Load Hello World Observer Hyperty</a>');
+      collection.append('<a onclick="loadHypertyRep();" class="waves-effect waves-light btn">Load Hello World Reporter Hyperty</a>');
+      */
     });
 }
+
+/**
+* Function to load the HelloWorldObserver Hyperty
+*/
 
 function loadHypertyObs()
 {
@@ -77,6 +72,10 @@ function loadHypertyObs()
     enableSayHelloToLocal();
   });
 }
+
+/**
+* Function to load the HelloWorldReporter Hyperty
+*/
 
 function loadHypertyRep(){
   RUNTIME.requireHyperty(hypertyURI(hyperty_domain, 'HelloWorldReporter')).then((hyperty) => {
