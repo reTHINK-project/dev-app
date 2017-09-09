@@ -43,12 +43,14 @@ function loadRuntime()
       RUNTIME = runtime
       var time = (new Date().getTime()) - start;
       $('.runtime-panel').append('<p>Runtime has been successfully launched in ' + time/1000 +' seconds</p>');
-      let collection = $('.collection');
+/*      let observerLoad = $('.observer-panel.load');
+      let reporterLoad = $('.reporter-panel.load');
+
       let loadHyperties = '<a onclick="loadHypertyObs();" class="waves-effect waves-light btn center-align">Load Hello World Observer Hyperty</a>'+
       '<a onclick="loadHypertyRep();" class="waves-effect waves-light btn center-align">Load Hello World Reporter Hyperty</a>';
 
       collection.append(loadHyperties);
-/*
+
       collection.append('<p><a onclick="loadHypertyObs();" class="waves-effect waves-light btn">Load Hello World Observer Hyperty</a>');
       collection.append('<a onclick="loadHypertyRep();" class="waves-effect waves-light btn">Load Hello World Reporter Hyperty</a>');
       */
@@ -62,11 +64,10 @@ function loadRuntime()
 function loadHypertyObs()
 {
   RUNTIME.requireHyperty(hypertyURI(hyperty_domain, 'HelloWorldObserver')).then((hyperty) => {
-    console.log('hyperty', hyperty);
+    console.log('[HelloWorldDemo.loadHypertyObs', hyperty);
     hypertyObserver = hyperty;
-    $('.runtime-panel').append('<p><b>'
-    +' Event: Hyperty '+hyperty.name+' Deployed<br>'+
-    '<hr style="border:1px solid;"/></b></p>');
+    $('.observer-info').append('<p>Deployed</p>');
+    $('.load-observer').hide();
     hypertyDeployed(hypertyObserver);
     status++;
     enableSayHelloToLocal();
@@ -81,13 +82,11 @@ function loadHypertyRep(){
   RUNTIME.requireHyperty(hypertyURI(hyperty_domain, 'HelloWorldReporter')).then((hyperty) => {
     hypertyReporter = hyperty;
     console.log(hyperty);
-    $('.runtime-panel').append('<p><b>'
-    +' Event: Hyperty '+hyperty.name+' Deployed<br>'+
-    '<hr style="border:1px solid;"/></b></p>');
+    $('.reporter-info').append('<p>Deployed</p>');
+    $('.load-reporter').hide();
     status++;
     if (! reporterLoaded) {
-      let collection = $('.collection');
-      collection.append('<a  onclick="fillSayHelloToRemoteHyperty();"  class="collection-item">How to say Hello to a remote Hyperty</li>') ;
+      $('.hello-panel').append('<p><a  onclick="fillSayHelloToRemoteHyperty();"  class="waves-effect waves-light btn center-align">Say Hello to a remote Hyperty</li></p>') ;
       reporterLoaded = true;
     }
   enableSayHelloToLocal();
@@ -100,13 +99,12 @@ function sayHelloToLocalHyperty()
   console.log('Saying Hello');
   hypertyReporter.instance.hello(hypertyObserver.runtimeHypertyURL).then(function(helloObject) {
   toHyperty = hypertyObserver.runtimeHypertyURL;
-  $('.runtime-panel').append('<p><b>'
-  +' Event: Hello sent to Local Hypperty <br>'+
-  '<hr style="border:1px solid;"/></b></p>');
-  $('.runtime-panel').append('<p>Observer Url to send Hello: '+ toHyperty+'</p>');
+  console.log('[HelloWorldDemo.sayHelloToLocalHyperty] hello object: ', helloObject);
+  $('.reporter-msg-panel').append('<p>'+helloObject.data.hello+'</p>');
+  $('.hello-panel').hide();
     if (!sent) {
-      let collection = $('.collection');
-      collection.append('<a  onclick="fillSayBye();"  class="collection-item">How to say bye to Observer Hyperty</li>') ;
+      let bye = $('.bye-panel');
+      bye.append('<a  onclick="fillSayBye();"  class="waves-effect waves-light btn center-align">Say Bye</li>') ;
       sent = true;
     }
   }).catch(function(reason) {
@@ -136,9 +134,9 @@ function enableSayHelloToLocal()
 {
   console.log('status', status);
   if (status === 2) {
-    let collection = $('.collection');
+    let hello = $('.hello-panel');
     console.log('INNNNNNNNNNNNN');
-    collection.append('<a  onclick="sayHelloToLocalHyperty();"  class="collection-item">How to say hello to a local Hyperty</li>') ;
+    hello.append('<p><a  onclick="sayHelloToLocalHyperty();"  class="waves-effect waves-light btn center-align">Say hello to local Observer</li></p>') ;
   }
 }
 function sayHelloToRemoteHyperty(event) {
@@ -152,15 +150,12 @@ function sayHelloToRemoteHyperty(event) {
   console.log(toHyperty);
 
   hypertyReporter.instance.hello(toHyperty).then(function(helloObject) {
-    $('.runtime-panel').append('<p><b>'
-    +' Event: Hello sent to Remote Hyperty <br>'+
-    '<hr style="border:1px solid;"/></b></p>');
-    $('.runtime-panel').append('<p>Observer Url: '+ toHyperty+'</p>');
-    let collection = $('.collection');
+    $('.reporter-msg-panel').append('<p>'+ helloObject.data+'</p>');
     let hello = $('.hello-panel');
     hello.addClass('hide');
+    let bye = $('.bye-panel');
     if (!sent) {
-      collection.append('<a  onclick="fillSayBye();"  class="collection-item">How to say Bye to a Hyperty.</li>') ;
+      bye.append('<a  onclick="fillSayBye();"  class="waves-effect waves-light btn center-align">Send Message to Remote Observer.</li>') ;
       sent = true;
     }
   }).catch(function(reason) {
@@ -174,13 +169,13 @@ function fillSayBye(){
 
   let say_bye = $('.say-bye');
 
-  if (say_bye.length > 0) {
+//  if (say_bye.length > 0) {
       bye.removeClass('hide');
-  } else {
-    let sayBye = '<form class="say-bye"> Message to Send: <input class="to-msg-input" type="text" name="toBye"><br><input type="submit" value="Say Bye"></form>'
+  //} else {
+    let sayBye = '<form class="say-bye"> Message to Send: <input class="to-msg-input" type="text" name="toBye"><br><input type="submit" value="Send"></form>'
     bye.append(sayBye);
     $('.say-bye').on('submit', sayByeToHyperty);
-  }
+//  }
 }
 
 function sayByeToHyperty(event) {
@@ -193,12 +188,10 @@ function sayByeToHyperty(event) {
 
   console.log('dsadasd', msgToSend);
   let bye = $('.bye-panel');
-  bye.addClass('hide');
+  //bye.addClass('hide');
   hypertyReporter.instance.bye(msgToSend);
-  $('.runtime-panel').append('<p><b>'
-  +' Event: Bye sent to Hypperty <br>'+
-  '<hr style="border:1px solid;"/></b></p>');
-  $('.runtime-panel').append('<p>HypertyUrl to receive Bye: '+toHyperty+'</p>');
+  $('.reporter-msg-panel').append('<p>'+msgToSend+'</p>');
+  $('.to-msg-input')[0].reset();
 }
 
 /**
@@ -209,23 +202,18 @@ function hypertyDeployed(result) {
 
   hypertyObserver = result.instance;
 
-  console.log(hypertyObserver);
+  console.log('[HelloWorldDemo.hypertyDeployed] ',hypertyObserver);
 
   $('.selection-panel').hide();
 
-  $('.runtime-panel').append('<p>Hyperty Observer URL: ' + result.runtimeHypertyURL + '</p>');
+  $('.observer-info').append('<p>URL: ' + result.runtimeHypertyURL + '</p>');
 
   // Add an invitation Callback
   hypertyObserver.addEventListener('invitation', function(identity) {
 
-    JSON.stringify(identity);
+    console.log('[HelloWorldDemo] Invitation received from:', JSON.stringify(identity));
 
-    console.log('Hello event received from:', identity);
-
-    $('.runtime-panel').append('<p><b>'
-    +' Event: Observer Hyperty - Invitation Received <br>'+
-    '<hr style="border:1px solid;"/></b></p>');
-    $('.runtime-panel').append('<p> Invitation received from:' + identity.userProfile.username + '</p>');
+    $('.observer-evt').append('<p>Invitation Received from:' + identity.userProfile.username + '</p>');
 
 
   });
@@ -233,12 +221,9 @@ function hypertyDeployed(result) {
 
   hypertyObserver.addEventListener('hello', function(event) {
 
-    $('.runtime-panel').append('<p><b>'
-    +' Event: Observer Hyperty - Hello Event Received <br>'+
-    '<hr style="border:1px solid;"/></b></p>');
-    console.log('Hello event received:', event);
+    console.log('[HelloWorldDemo] Hello received from:', event.hello);
 
-    $('.runtime-panel').append('<p> Message:' + event.hello + '</p>');
+    $('.observer-msg-panel').append('<p>' + event.hello + '</p>');
 
   });
 
